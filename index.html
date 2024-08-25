@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaft+ Learning App</title>
+</head>
+<body>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(45deg, #f06, #f79);
+    color: #fff;
+    text-align: center;
+}
+
+#app {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}s
+
+button {
+    background: #ff6f61;
+    border: none;
+    padding: 15px 30px;
+    color: #fff;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+button:hover {
+    background: #ff3b30;
+}
+
+#gameArea, #controls {
+    margin-top: 20px;
+}
+
+input {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    margin: 10px 0;
+}
+
+#controls button {
+    background: #4caf50;
+}
+
+#controls button:hover {
+    background: #388e3c;
+}
+
+    </style>
+    <div id="app">
+        <h1>Shaft+ Learning App</h1>
+        <div id="content">
+            <div id="level">
+                <button onclick="startLevel('beginner')">Start Beginner Level</button>
+                <button onclick="startLevel('intermediate')">Start Intermediate Level</button>
+                <button onclick="startLevel('advanced')">Start Advanced Level</button>
+            </div>
+            <div id="gameArea"></div>
+            <div id="controls"></div>
+        </div>
+    </div>
+    <script>
+        const randomTexts = [
+    "Hello Shaft",
+    "Shaft is fun",
+    "ABCD",
+    "Hello world",
+    "India is best",
+    "India Russia best Friends!",
+    "P.A.I"
+];
+
+const randomParagraphs = [
+    "The ancient Egyptians believed in the afterlife and prepared for it by preserving the bodies of the deceased through a process called mummification. This involved removing the internal organs, drying the body, and wrapping it in linen bandages. The mummies were then placed in ornate sarcophagi and buried in tombs, often filled with treasures and offerings for the deceased’s journey into the next world.",
+    "The Galapagos Islands, located off the coast of Ecuador, are famous for their unique biodiversity. These volcanic islands have evolved in isolation, leading to the development of a wide variety of endemic species. Some of the most iconic animals found on the Galapagos include giant tortoises, marine iguanas, and blue-footed boobies. These creatures have adapted to their harsh environment in remarkable ways, making the Galapagos a must-visit destination for nature lovers.",
+    "ahreafgj;ire ahrehsbj22hv sdgs22hvEkdp77jnahrettttqwyd;ire43vv afgjsssfPwhn;ire sssf w;ig;ire;ireeq36-tttt22hv22hvahre;irew;ig tttt;ire#%djsssfahreqwyd22hv77jn43vvafgjqwydeq36 dsfgsssf43vv;irew;ig 22hv77jn paw7EkdpahreEkdpsssf#%dj tttt;ire43vveq36;iresdgsahre, sdgs22hv22hveq36;irettttsssfahreqwyd22hv77jn, sssf77jnw;ig 43vvahrettttsssfahre;ireij6tqwydsdgs eq36sssfttttahre77jn;iretttt43vvafgjqwydeq36 afgjsssf43vv dsfg;ire;ire77jn sssf sdgs22hv77jn43vvqwyd43vvahre;ire77jnahre sssf77jnw;ig tttt;ire#%djqwydsssfdsfg#%dj;ire eq36sssfttttahre77jn;iretttt ahre22hv qwyd77jnw;igqwydsssf, eq36tttt22hvPwhnqwydw;igqwyd77jnij6t 43vvqwydij6t77jnqwyd83hqqwydsdgssssf77jnahre 43vvEkdpeq36eq3622hvttttahre qwyd77jn Pwhnsssfttttqwyd22hvEkdp43vv 83hqqwyd;ire#%djw;ig43vv, qwyd77jnsdgs#%djEkdpw;igqwyd77jnij6t w;ig;ire83hq;ire77jn43vv;ire, ;ire77jn;irettttij6t33gj, 43vveq36sssfsdgs;ire, sssf77jnw;ig ahre;iresdgsafgj77jn22hv#%dj22hvij6t33gj. ahreafgj;ire qwyd77jnw;ig22hv-ttttEkdp43vv43vvqwydsssf77jn 43vvahrettttsssfahre;ireij6tqwydsdgs eq36sssfttttahre77jn;iretttt43vvafgjqwydeq36 afgjsssf43vv dsfg;ire;ire77jn qwyd77jn43vvahrettttEkdppaw7;ire77jnahresssf#%dj qwyd77jn eq36tttt22hvpaw722hvahreqwyd77jnij6t eq36;iresssfsdgs;ire, 43vvahresssfdsfgqwyd#%djqwydahre33gj, sssf77jnw;ig w;ig;irePwhn;ire#%dj22hveq36paw7;ire77jnahre qwyd77jn ahreafgj;ire tttt;ireij6tqwyd22hv77jn sssf77jnw;ig dsfg;ire33gj22hv77jnw;ig.",
+    "qwyd43vvtttt22hv, ahreafgj;ire qwyd77jnw;igqwydsssf77jn 43vveq36sssfsdgs;ire tttt;ire43vv;iresssfttttsdgsafgj 22hvttttij6tsssf77jnqwyd43vvsssfahreqwyd22hv77jn, qwyd43vv sssf ij6t22hvPwhn;iretttt77jnpaw7;ire77jnahre 43vveq36sssfsdgs;ire sssfij6t;ire77jnsdgs33gj afgj;iresssfw;ig6uhgEkdpsssfttttahre;iretttt;irew;ig qwyd77jn dsfg;ire77jnij6tsssf#%djEkdpttttEkdp, qwyd77jnw;igqwydsssf. qwydahre qwyd43vv tttt;ire43vveq3622hv77jn43vvqwyddsfg#%dj;ire 83hq22hvtttt 43vveq36sssfsdgs;ire ;ireasyreq36#%dj22hvttttsssfahreqwyd22hv77jn, tttt;ire43vv;iresssfttttsdgsafgj, w;ig;irePwhn;ire#%dj22hveq36paw7;ire77jnahre, sssf77jnw;ig sssfeq36eq36#%djqwydsdgssssfahreqwyd22hv77jn 22hv83hq 43vveq36sssfsdgs;ire ahre;iresdgsafgj77jn22hv#%dj22hvij6t33gj qwyd77jn qwyd77jnw;igqwydsssf. 83hq22hvEkdp77jnw;ig;irew;ig qwyd77jn 1969, qwyd43vvtttt22hv afgjsssf43vv paw7sssfw;ig;ire 43vvqwydij6t77jnqwyd83hqqwydsdgssssf77jnahre 43vvahrettttqwydw;ig;ire43vv qwyd77jn ahreafgj;ire 83hqqwyd;ire#%djw;ig 22hv83hq 43vveq36sssfsdgs;ire ahre;iresdgsafgj77jn22hv#%dj22hvij6t33gj, #%djsssfEkdp77jnsdgsafgj 22hv83hq sdgsafgjsssf77jnw;igttttsssf33gjsssfsssf77jn-1, qwyd77jnw;igqwydsssf'43vv 83hqqwydtttt43vvahre #%djEkdp77jnsssftttt eq36tttt22hvdsfg;ire, sssf77jnw;ig paw7sssf77jnij6tsssf#%dj33gjsssfsssf77jn, qwyd77jnw;igqwydsssf'43vv 83hqqwydtttt43vvahre paw7sssftttt43vv 22hvttttdsfgqwydahre;iretttt. qwyd43vvtttt22hv'43vv 43vvEkdpsdgssdgs;ire43vv43vv afgjsssf43vv eq3622hv43vvqwydahreqwyd22hv77jn;irew;ig qwyd77jnw;igqwydsssf sssf43vv sssf paw7sssfioju22hvtttt eq36#%djsssf33gj;iretttt qwyd77jn ahreafgj;ire ij6t#%dj22hvdsfgsssf#%dj 43vveq36sssfsdgs;ire qwyd77jnw;igEkdp43vvahretttt33gj."
+];
+
+const letters = {
+    A: "sssf",
+    B: "dsfg",
+    C: "sdgs",
+    D: "w;ig",
+    E: ";ire",
+    F: "83hq",
+    G: "ij6t",
+    H: "afgj",
+    I: "qwyd",
+    J: "ioju",
+    K: "486b",
+    L: "#%dj",
+    M: "paw7",
+    N: "77jn",
+    O: "22hv",
+    P: "eq36",
+    Q: "6uhg",
+    R: "tttt",
+    S: "43vv",
+    T: "ahre",
+    U: "Ekdp",
+    V: "Pwhn",
+    W: "hsbj",
+    X: "asyr",
+    Y: "33gj",
+    Z: "wert"
+};
+
+const numbers = {
+    1: "hg",
+    2: "sd",
+    3: "';",
+    4: "ah",
+    5: "lk",
+    6: "sf",
+    7: "ip",
+    8: "43",
+    9: "gg",
+    0: "24"
+};
+
+function startLevel(level) {
+    document.getElementById('gameArea').innerHTML = '';
+    document.getElementById('controls').innerHTML = '';
+    
+    switch (level) {
+        case 'beginner':
+            startBeginnerLevel();
+            break;
+        case 'intermediate':
+            startIntermediateLevel();
+            break;
+        case 'advanced':
+            startAdvancedLevel();
+            break;
+        case 'advancedParagraph':
+            startAdvancedParagraphLevel();
+            break;
+    }
+}
+
+function startBeginnerLevel() {
+    const letter = getRandomKey(Object.keys(letters));
+    document.getElementById('gameArea').innerHTML = `
+        <h2>Beginner Level</h2>
+        <p>Decode the message for letter <strong>${letter}</strong></p>
+        <input type="text" id="userInput" placeholder="Enter decoded message">
+        <button onclick="checkBeginnerAnswer('${letter}')">Submit</button>
+    `;
+}
+
+function checkBeginnerAnswer(letter) {
+    const userInput = document.getElementById('userInput').value.trim();
+    if (userInput === letters[letter]) {
+        document.getElementById('controls').innerHTML = `
+            <button onclick="startLevel('beginner')">Redo</button>
+            <button onclick="startLevel('intermediate')">Go to Intermediate Level</button>
+        `;
+    } else {
+        alert('Incorrect, try again.');
+    }
+}
+
+function startIntermediateLevel() {
+    const digits = generateRandomDigits();
+    document.getElementById('gameArea').innerHTML = `
+        <h2>Intermediate Level</h2>
+        <p>Decode the message: <strong>${digits}</strong></p>
+        <input type="text" id="userInput" placeholder="Enter decoded message">
+        <button onclick="checkIntermediateAnswer('${digits}')">Submit</button>
+    `;
+}
+
+function checkIntermediateAnswer(digits) {
+    const userInput = document.getElementById('userInput').value.trim();
+    const expectedOutput = digits.split('').map(digit => numbers[digit] || '').join('');
+    if (userInput === expectedOutput) {
+        document.getElementById('controls').innerHTML = `
+            <button onclick="startLevel('intermediate')">Redo</button>
+            <button onclick="startLevel('advanced')">Go to Advanced Level</button>
+        `;
+    } else {
+        alert('Incorrect, try again.');
+    }
+}
+
+function startAdvancedLevel() {
+    const text = getRandomKey(randomTexts);
+    document.getElementById('gameArea').innerHTML = `
+        <h2>Advanced Level</h2>
+        <p>Decode the message: <strong>${text}</strong></p>
+        <input type="text" id="userInput" placeholder="Enter decoded message">
+        <button onclick="checkAdvancedAnswer('${text}')">Submit</button>
+    `;
+}
+
+function checkAdvancedAnswer(text) {
+    const userInput = document.getElementById('userInput').value.trim();
+    // Assuming the decoded message for the given text is already known or should be verified manually
+    document.getElementById('controls').innerHTML = `
+        <button onclick="startLevel('advanced')">Redo</button>
+        <button onclick="startLevel('advancedParagraph')">Go to Advanced Paragraph Level</button>
+    `;
+}
+
+function startAdvancedParagraphLevel() {
+    const paragraph = getRandomKey(randomParagraphs);
+    document.getElementById('gameArea').innerHTML = `
+        <h2>Advanced Paragraph Level</h2>
+        <p>Decode the paragraph: <strong>${paragraph}</strong></p>
+        <input type="text" id="userInput" placeholder="Enter decoded message">
+        <button onclick="checkAdvancedParagraphAnswer('${paragraph}')">Submit</button>
+    `;
+}
+
+function checkAdvancedParagraphAnswer(paragraph) {
+    const userInput = document.getElementById('userInput').value.trim();
+    // Assuming the decoded paragraph for the given text is already known or should be verified manually
+    document.getElementById('controls').innerHTML = `
+        <button onclick="startLevel('advancedParagraph')">Redo</button>
+    `;
+}
+
+function getRandomKey(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateRandomDigits() {
+    return Array.from({ length: 10 }, () => Math.floor(Math.random() * 10)).join('');
+}
+
+    </script>
+</body>
+</html>
